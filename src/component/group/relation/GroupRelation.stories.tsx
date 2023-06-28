@@ -16,11 +16,10 @@ export const Component: Story = {
   args: {
     group: { id: 1, name: 'Maintainers' },
     users: [
-      { user: { id: 1, name: 'John' }, joined: true },
-      { user: { id: 2, name: 'Jane' }, joined: false },
-      { user: { id: 3, name: 'Jack' }, joined: true },
+      { id: 1, name: 'John', role: 'Leader', joined: true },
+      { id: 2, name: 'Jane', role: '', joined: false },
+      { id: 3, name: 'Jack', role: '', joined: true },
     ],
-    join: console.log,
-    remove: console.log,
+    update: console.log,
   },
 }

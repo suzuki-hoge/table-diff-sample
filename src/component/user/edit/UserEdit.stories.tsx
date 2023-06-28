@@ -23,7 +23,9 @@ export const Update: Story = {
     user: {
       id: 1,
       name: 'John',
-      optionCode: 'Admin',
+      role: 'Admin',
+      created: '2023-01-02 15:17:52',
+      updated: '2023-01-02 15:17:52',
     },
     store: console.log,
   },

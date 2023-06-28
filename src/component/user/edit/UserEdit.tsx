@@ -2,14 +2,16 @@ import { type FC, useState } from 'react'
 import styles from '../../../global.module.scss'
 import { type User } from '../../../types'
 
+export type Store = (id: number | undefined, name: string, role: string) => void
+
 interface Props {
   user?: User
-  store: (id: number | undefined, name: string, option: string) => void
+  store: Store
 }
 
 export const UserEdit: FC<Props> = (props) => {
   const [name, setName] = useState(props.user?.name ?? '')
-  const [option, setOption] = useState(props.user?.optionCode ?? '')
+  const [role, setRole] = useState(props.user?.role ?? '')
 
   return (
     <div className={styles.page}>
@@ -31,18 +33,18 @@ export const UserEdit: FC<Props> = (props) => {
           <span>Option</span>
           <input
             type={'text'}
-            value={option}
+            value={role}
             size={64}
             maxLength={32}
             onChange={(e) => {
-              setOption(e.target.value)
+              setRole(e.target.value)
             }}
           />
         </div>
       </div>
       <button
         onClick={() => {
-          props.store(props.user?.id, name, option)
+          props.store(props.user?.id, name, role)
         }}
       >
         Save

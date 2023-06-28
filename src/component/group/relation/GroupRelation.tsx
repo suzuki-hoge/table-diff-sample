@@ -1,16 +1,29 @@
 import { type FC, useState } from 'react'
 import styles from '../../../global.module.scss'
-import { type Group, type User } from '../../../types'
+
+export type Update = (groupId: number, userIds: number[]) => void
+
+export interface RelationGroup {
+  id: number
+  name: string
+}
+
+export interface RelationUser {
+  id: number
+  name: string
+  role: string
+  joined: boolean
+}
 
 interface Props {
-  group: Group
-  users: Array<{ user: User; joined: boolean }>
-  update: (groupId: number, userIds: number[]) => void
+  group: RelationGroup
+  users: RelationUser[]
+  update: Update
 }
 
 export const GroupRelation: FC<Props> = (props) => {
   const [joinedUserIds, setJoinedUserIds] = useState(
-    props.users.filter(({ joined }) => joined).map(({ user }) => user.id)
+    props.users.filter(({ joined }) => joined).map(({ id }) => id)
   )
 
   return (
@@ -18,23 +31,25 @@ export const GroupRelation: FC<Props> = (props) => {
       <h2>Relation ( {props.group.name} )</h2>
       <div className={styles.content}>
         <div className={styles.field}>
-          {props.users.map(({ user, joined }) => (
-            <div key={user.id} className={styles.row}>
+          {props.users.map(({ id, name, role }) => (
+            <div key={id} className={styles.row}>
               <input
-                id={`user-${user.id}`}
+                id={`user-${id}`}
                 type={'checkbox'}
-                checked={joinedUserIds.includes(user.id)}
+                checked={joinedUserIds.includes(id)}
                 onClick={() => {
                   let ids = [...joinedUserIds]
-                  if (joinedUserIds.includes(user.id)) {
-                    ids = ids.filter((id) => id !== user.id)
+                  if (joinedUserIds.includes(id)) {
+                    ids = ids.filter((n) => n !== id)
                   } else {
-                    ids.push(user.id)
+                    ids.push(id)
                   }
                   setJoinedUserIds(ids)
                 }}
               />
-              <label htmlFor={`user-${user.id}`}>{user.name}</label>
+              <label htmlFor={`user-${id}`}>
+                {role !== '' ? `${name} ( ${role} )` : `${name}`}
+              </label>
             </div>
           ))}
         </div>

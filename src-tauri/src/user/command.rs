@@ -1,13 +1,14 @@
 use serde::{Deserialize, Serialize};
 
 use crate::user;
-use crate::user::types::User;
 
 #[derive(Serialize, Deserialize)]
 pub struct UserJson {
-    pub id: usize,
-    pub name: String,
-    pub option_code: String,
+    id: usize,
+    name: String,
+    role: String,
+    created: String,
+    updated: String,
 }
 
 #[tauri::command]
@@ -19,36 +20,21 @@ pub fn user_all() -> Vec<UserJson> {
         .map(|user| UserJson {
             id: user.id,
             name: user.name.clone(),
-            option_code: user.option_code.clone().unwrap_or_default(),
+            role: user.role.clone().unwrap_or(String::new()),
+            created: user.created.clone(),
+            updated: user.updated.clone(),
         })
         .collect()
 }
 
 #[tauri::command]
-pub fn user_create(name: String, option: String) {
-    user::db::create(
-        name,
-        if option.is_empty() {
-            None
-        } else {
-            Some(option)
-        },
-    );
+pub fn user_create(name: String, role: String) {
+    user::db::create(name, if role.is_empty() { None } else { Some(role) });
 }
 
 #[tauri::command]
-pub fn user_update(id: usize, name: String, option: String) {
-    let user = User {
-        id,
-        name,
-        option_code: if option.is_empty() {
-            None
-        } else {
-            Some(option)
-        },
-    };
-
-    user::db::update(user);
+pub fn user_update(id: usize, name: String, role: String) {
+    user::db::update(id, name, if role.is_empty() { None } else { Some(role) });
 }
 
 #[tauri::command]

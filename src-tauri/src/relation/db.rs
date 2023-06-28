@@ -25,10 +25,7 @@ pub fn find(group_id: usize) -> (Group, Vec<(User, bool)>) {
         .map(|result| {
             result
                 .map(|x| x.unwrap())
-                .map(|row| {
-                    
-                    from_row::<usize>(row)
-                })
+                .map(from_row::<usize>)
                 .collect_vec()
         })
         .unwrap();
@@ -58,7 +55,7 @@ pub fn update(group_id: usize, user_ids: Vec<usize>) {
 }
 
 fn create_connection() -> Conn {
-    let url = "mysql://user:password@127.0.0.1:19000/table-diff-sample";
+    let url = "mysql://user:password@127.0.0.1:20000/table-diff-sample";
     let opt = Opts::from_url(url).unwrap();
     let builder = OptsBuilder::from_opts(opt);
     let manager = MysqlConnectionManager::new(builder);

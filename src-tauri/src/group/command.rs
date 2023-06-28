@@ -1,12 +1,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::group;
-use crate::group::types::Group;
 
 #[derive(Serialize, Deserialize)]
 pub struct GroupJson {
-    pub id: usize,
-    pub name: String,
+    id: usize,
+    name: String,
+    created: String,
+    updated: String,
 }
 
 #[tauri::command]
@@ -18,6 +19,8 @@ pub fn group_all() -> Vec<GroupJson> {
         .map(|group| GroupJson {
             id: group.id,
             name: group.name.clone(),
+            created: group.created.clone(),
+            updated: group.updated.clone(),
         })
         .collect()
 }
@@ -29,9 +32,7 @@ pub fn group_create(name: String) {
 
 #[tauri::command]
 pub fn group_update(id: usize, name: String) {
-    let group = Group { id, name };
-
-    group::db::update(group);
+    group::db::update(id, name);
 }
 
 #[tauri::command]

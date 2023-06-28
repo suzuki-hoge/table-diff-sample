@@ -1,8 +1,8 @@
 services:
   table-diff-sample-db:
-    image: mysql:8.0
+    build: ./docker/mysql
     ports:
-      - 19000:3306
+      - 20000:3306
     volumes:
       - ./docker/mysql/init.d:/docker-entrypoint-initdb.d
     environment:

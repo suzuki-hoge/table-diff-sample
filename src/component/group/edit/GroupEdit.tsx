@@ -2,9 +2,11 @@ import { type FC, useState } from 'react'
 import styles from '../../../global.module.scss'
 import { type Group } from '../../../types'
 
+export type Store = (id: number | undefined, name: string) => void
+
 interface Props {
   group?: Group
-  store: (id: number | undefined, name: string) => void
+  store: Store
 }
 
 export const GroupEdit: FC<Props> = (props) => {

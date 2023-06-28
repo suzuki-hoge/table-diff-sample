@@ -1,19 +1,25 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 
-use crate::group::command::GroupJson;
 use crate::relation;
-use crate::user::command::UserJson;
 
 #[derive(Serialize, Deserialize)]
 pub struct RelationJson {
-    group: GroupJson,
-    users: Vec<UserJson2>,
+    group: RelationGroupJson,
+    users: Vec<RelationUserJson>,
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct UserJson2 {
-    user: UserJson,
+struct RelationGroupJson {
+    id: usize,
+    name: String,
+}
+
+#[derive(Serialize, Deserialize)]
+struct RelationUserJson {
+    id: usize,
+    name: String,
+    role: String,
     joined: bool,
 }
 
@@ -21,18 +27,16 @@ pub struct UserJson2 {
 pub fn relation_find(id: usize) -> RelationJson {
     let (group, users) = relation::db::find(id);
     RelationJson {
-        group: GroupJson {
+        group: RelationGroupJson {
             id: group.id,
             name: group.name,
         },
         users: users
             .into_iter()
-            .map(|(user, joined)| UserJson2 {
-                user: UserJson {
-                    id: user.id,
-                    name: user.name,
-                    option_code: String::new(),
-                },
+            .map(|(user, joined)| RelationUserJson {
+                id: user.id,
+                name: user.name,
+                role: user.role.clone().unwrap_or(String::new()),
                 joined,
             })
             .collect_vec(),

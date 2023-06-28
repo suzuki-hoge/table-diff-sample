@@ -1,17 +1,6 @@
 import { type FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Links } from '../component/Links'
 
 export const TopPage: FC = () => {
-  return (
-    <ul>
-      <li>
-        <li>
-          <Link to={'/groups/all'}>Groups</Link>
-        </li>
-        <li>
-          <Link to={'/users/all'}>Users</Link>
-        </li>
-      </li>
-    </ul>
-  )
+  return <Links />
 }

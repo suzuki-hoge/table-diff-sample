@@ -15,8 +15,18 @@ type Story = StoryObj<typeof meta>
 export const Component: Story = {
   args: {
     groups: [
-      { id: 1, name: 'Maintainers' },
-      { id: 2, name: 'Trials' },
+      {
+        id: 1,
+        name: 'Maintainers',
+        created: '2023-01-01 08:53:00',
+        updated: '2023-01-01 08:53:00',
+      },
+      {
+        id: 2,
+        name: 'Trials',
+        created: '2023-01-01 09:02:33',
+        updated: '2023-01-02 17:00:04',
+      },
     ],
   },
 }

@@ -2,45 +2,74 @@ import { type FC } from 'react'
 import styles from '../../../global.module.scss'
 import { type User } from '../../../types'
 import { BsPencil } from 'react-icons/bs'
-import { AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineDelete, AiOutlinePlusCircle } from 'react-icons/ai'
+
+export type Create = () => void
+export type Update = (id: number) => void
+export type Delete = (id: number) => void
 
 interface Props {
   users: User[]
-  create: () => void
-  update: (id: number) => void
-  delete: (id: number) => void
+  create: Create
+  update: Update
+  remove: Delete
 }
 
 export const UserList: FC<Props> = (props) => {
   return (
     <div className={styles.page}>
       <h2>Users</h2>
-      <div className={styles.content}>
-        {props.users.map((user) => (
-          <div key={user.id} className={styles.field}>
-            <span>{user.name}</span>
-            <div className={styles.icons}>
-              <BsPencil
+      <table>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>role</th>
+            <th>create</th>
+            <th>update</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.role}</td>
+              <td>{user.created}</td>
+              <td>{user.updated}</td>
+              <td>
+                <BsPencil
+                  onClick={() => {
+                    props.update(user.id)
+                  }}
+                />
+                <AiOutlineDelete
+                  onClick={() => {
+                    props.remove(user.id)
+                  }}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <AiOutlinePlusCircle
                 onClick={() => {
-                  props.update(user.id)
+                  props.create()
                 }}
               />
-              <AiOutlineDelete
-                onClick={() => {
-                  props.delete(user.id)
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-      <button
-        onClick={() => {
-          props.create()
-        }}
-      >
-        Add
-      </button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   )
 }
