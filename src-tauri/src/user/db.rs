@@ -38,6 +38,9 @@ pub fn create(name: String, role: Option<String>) {
         (&name, &role),
     )
     .unwrap();
+
+    conn.prep_exec("insert into logs (action) values ('create users')", ())
+        .unwrap();
 }
 
 pub fn update(id: usize, name: String, role: Option<String>) {
@@ -48,15 +51,24 @@ pub fn update(id: usize, name: String, role: Option<String>) {
         (&name, &role, &id),
     )
     .unwrap();
+
+    conn.prep_exec("insert into logs (action) values ('update users')", ())
+        .unwrap();
 }
 
 pub fn delete(id: usize) {
     let mut conn = create_connection();
 
-    conn.prep_exec("update users set deleted = now() where id = ?", vec![&id])
-        .unwrap();
+    conn.prep_exec(
+        "update users set updated = now(), deleted = now() where id = ?",
+        vec![&id],
+    )
+    .unwrap();
 
     conn.prep_exec("delete from relations where user_id = ?", vec![&id])
+        .unwrap();
+
+    conn.prep_exec("insert into logs (action) values ('delete users')", ())
         .unwrap();
 }
 

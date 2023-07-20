@@ -23,8 +23,13 @@ create table relations
 (
     group_id int,
     user_id  int,
-    created  datetime default current_timestamp,
     primary key (group_id, user_id)
+);
+
+create table logs
+(
+    action char(32),
+    created  datetime default current_timestamp
 );
 
 -- test data

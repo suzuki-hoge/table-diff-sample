@@ -32,6 +32,9 @@ pub fn create(name: String) {
 
     conn.prep_exec("insert into `groups` (name) values (?)", vec![&name])
         .unwrap();
+
+    conn.prep_exec("insert into logs (action) values ('create groups')", ())
+        .unwrap();
 }
 
 pub fn update(id: usize, name: String) {
@@ -42,18 +45,24 @@ pub fn update(id: usize, name: String) {
         (&name, &id),
     )
     .unwrap();
+
+    conn.prep_exec("insert into logs (action) values ('update groups')", ())
+        .unwrap();
 }
 
 pub fn delete(id: usize) {
     let mut conn = create_connection();
 
     conn.prep_exec(
-        "update `groups` set deleted = now() where id = ?",
+        "update `groups` set updated = now(), deleted = now() where id = ?",
         vec![&id],
     )
     .unwrap();
 
     conn.prep_exec("delete from relations where group_id = ?", vec![&id])
+        .unwrap();
+
+    conn.prep_exec("insert into logs (action) values ('delete groups')", ())
         .unwrap();
 }
 

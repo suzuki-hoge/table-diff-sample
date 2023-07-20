@@ -52,6 +52,9 @@ pub fn update(group_id: usize, user_ids: Vec<usize>) {
         )
         .unwrap();
     }
+
+    conn.prep_exec("insert into logs (action) values ('update relations')", ())
+        .unwrap();
 }
 
 fn create_connection() -> Conn {

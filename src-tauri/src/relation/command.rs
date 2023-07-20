@@ -36,7 +36,7 @@ pub fn relation_find(id: usize) -> RelationJson {
             .map(|(user, joined)| RelationUserJson {
                 id: user.id,
                 name: user.name,
-                role: user.role.clone().unwrap_or(String::new()),
+                role: user.role.unwrap_or(String::new()),
                 joined,
             })
             .collect_vec(),
